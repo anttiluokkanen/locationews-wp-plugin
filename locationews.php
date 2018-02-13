@@ -34,7 +34,7 @@ $locationews_version = '2.0.1';
 /**
  * Plugin enviroment.
  */
-$locationews_enviroment = 'dev';
+$locationews_enviroment = 'production';
 
 /**
  * Autoloader callback.
