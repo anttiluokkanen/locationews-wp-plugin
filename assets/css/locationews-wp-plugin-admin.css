@@ -2756,3 +2756,13 @@
 .locationews-wp-plugin #locationews-pac-input:focus {
   border-color: #4d90fe;
 }
+.form-table th {
+  padding-top:15px;
+}
+.bootstrap-switch-small {
+ margin-top:14px;
+}
+/*
+#widgetWidth, #widgetHeight {
+  width:100px;
+}*/

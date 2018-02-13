@@ -42,6 +42,11 @@ class Locationews_Provider_Public extends Locationews_AbstractProvider {
 			$this->plugin->ln_get_version(),
 			true
 		);
+
+		if ( false === $this->plugin->ln_check_registered_library( 'maps.googleapis' ) ) {
+			wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . $this->plugin->ln_get_option('gApiKey', 'front') . '&language=' . $this->plugin->ln_get_option('gLanguage', 'front') . '&region=' . $this->plugin->ln_get_option('gRegion', 'front') . '&libraries=places', [ 'jquery' ], $this->plugin->ln_get_version(), true );
+		}
+
 	}
 
 }

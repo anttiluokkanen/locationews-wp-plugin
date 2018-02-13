@@ -459,6 +459,41 @@ class Locationews_Plugin extends Locationews_AbstractPlugin {
 	}
 
 	/**
+	 * Field Input
+	 *
+	 * Creates input field.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @param $args
+	 */
+	public function ln_field_input( $args ) {
+
+		$defaults = [
+			'name'  => 'locationews_user[' . $args['id'] . ']',
+			'value' => '',
+			'id' => '',
+			'description' => '',
+		];
+
+		$atts = wp_parse_args( $args, $defaults );
+
+		if ( ! empty( $this->user_options[ $atts['id'] ] ) ) {
+			$atts['value'] = $this->user_options[ $atts['id'] ];
+		}
+		?>
+		<div class="form-group locationews-form-group">
+			<div class="ln-tooltip"
+			     title="<?php echo esc_attr( $atts['description'] ); ?>">
+				<label for="<?php echo esc_attr( $atts['id'] ); ?>">
+					<input type="text" id="<?php echo esc_attr( $atts['id'] ); ?>" name="<?php echo esc_attr( $atts['name'] ); ?>" class="form-control" value="<?php echo esc_attr( $atts['value'] ); ?>" placeholder="<?php echo esc_attr( $atts['placeholder'] ); ?>" />
+				<?php echo esc_attr( $atts['description'] ) ?></label>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
 	 * Field Google Map
 	 *
 	 * Creates a Google Map location field.
@@ -496,6 +531,25 @@ class Locationews_Plugin extends Locationews_AbstractPlugin {
 			</div>
 		</div>
 		<?php
+	}
+
+	public function ln_get_widget_sizes() {
+		$size = [];
+
+		$i = 50;
+		while( $i <= 500 ) {
+
+			$size[] = [
+				'id' => $i . ' px',
+				'name' => $i . ' px',
+				'value' => $i . ' px'
+			];
+
+			$i = ( $i + 25 );
+		}
+
+		return $size;
+
 	}
 
 	/**
@@ -725,5 +779,38 @@ class Locationews_Plugin extends Locationews_AbstractPlugin {
 			?>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Check registered library
+	 *
+	 * Check if script library is already registered.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string $handle
+	 *
+	 * @return bool
+	 */
+	public function ln_check_registered_library( $handle = '' ) {
+
+		global $wp_scripts;
+
+		$library_already_registered = false;
+
+		$registered = $wp_scripts->registered;
+
+		foreach ( $registered as $script ) {
+
+			// For each script, verify if src contains handle
+			if ( strpos( $script->src, $handle ) !== false ) {
+
+				$library_already_registered = true;
+
+			}
+		}
+
+		return $library_already_registered;
+
 	}
 }

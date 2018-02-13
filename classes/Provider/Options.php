@@ -127,6 +127,13 @@ class Locationews_Provider_Options extends Locationews_AbstractProvider {
 			'locationews'
 		);
 
+		add_settings_section(
+			'locationews-widget',
+			__('Widget', $this->plugin->ln_get_slug() ),
+			[ $this, 'ln_widget_section_info' ],
+			'locationews'
+		);
+
 		add_settings_field(
 			'locationewsCategory',
 			__( 'Default Category', $this->plugin->ln_get_slug() ),
@@ -179,6 +186,68 @@ class Locationews_Provider_Options extends Locationews_AbstractProvider {
 				'description' => __( "Select the default location (the default option is your publication's address, here you can choose another location).", $this->plugin->ln_get_slug() ),
 				'id'          => 'location',
 				'value'       => $this->plugin->ln_get_option( 'location', 'user' ),
+			]
+		);
+
+		add_settings_field(
+			'enableWidget',
+			__( 'Enable front end widget', $this->plugin->ln_get_slug() ),
+			[ $this->plugin, 'ln_field_multicheckbox' ],
+			'locationews',
+			'locationews-widget',
+			[
+				'description' => __( 'Enable front end widget', $this->plugin->ln_get_slug() ),
+				'id'          => 'displayWidget',
+				'value'       => 'on',
+				'fields'      => [
+					0 => [
+						'id' => 'enable',
+						'name' => 'locationews_user[widget][enable]',
+						'description' => '',
+						'value' => 'on',
+						'value_id' => 1
+					]
+				],
+			]
+		);
+
+		add_settings_field(
+			'widgetPosition',
+			__( 'Position', $this->plugin->ln_get_slug() ),
+			[ $this->plugin, 'ln_field_select' ],
+			'locationews',
+			'locationews-widget',
+			[
+				'description' => __( 'Set widget position', $this->plugin->ln_get_slug() ),
+				'id'          => 'widgetPosition',
+				'value'       => 'after',
+				'fields'      => [
+					0 => [
+						'id' => 'after',
+						'name' => __('After article', $this->plugin->ln_get_slug() ),
+						'value' => 'after'
+					],
+					1 => [
+						'id' => 'before',
+						'name' => __('Before article', $this->plugin->ln_get_slug() ),
+						'value' => 'before'
+					]
+				],
+			]
+		);
+
+		add_settings_field(
+			'widgetHeight',
+			__( 'Height', $this->plugin->ln_get_slug() ),
+			[ $this->plugin, 'ln_field_select' ],
+			'locationews',
+			'locationews-widget',
+			[
+				'description' => __( 'Set widget height', $this->plugin->ln_get_slug() ),
+				'id'          => 'widgetHeight',
+				'value'       => '150px',
+				'placeholder' => '150px',
+				'fields' => $this->plugin->ln_get_widget_sizes(),
 			]
 		);
 

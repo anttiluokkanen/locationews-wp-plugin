@@ -9,7 +9,7 @@ Tested up to: 4.9.2
 Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Version: 2.0.0
+Version: 2.0.1
 
 Publish location based articles in Locationews.
 
