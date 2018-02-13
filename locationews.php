@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Plugin version.
  */
-$locationews_version = '2.0.1';
+$locationews_version = '2.0.0';
 
 /**
  * Plugin enviroment.
