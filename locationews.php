@@ -108,10 +108,6 @@ if ( is_admin() ) {
 	locationews()->ln_register_hooks( new Locationews_Provider_Public() );
 }
 
-locationews()->ln_register_hooks( new Locationews_Provider_Shortcode() );
-locationews()->ln_register_hooks( new Locationews_Provider_Widget() );
-
-
 // load the plugin
 add_action( 'plugins_loaded', [ locationews(), 'ln_load_plugin' ] );
 
