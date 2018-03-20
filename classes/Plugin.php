@@ -731,8 +731,7 @@ class Locationews_Plugin extends Locationews_AbstractPlugin {
 			18 => __( 'Error resizing image', $this->ln_get_slug() ),
 			19 => __( 'Error saving resized image', $this->ln_get_slug() ),
 			20 => __( 'Error saving image thumbnail', $this->ln_get_slug() ),
-			21 => __( 'Error copying image, file not found', $this->ln_get_slug() ),
-			99 => __( "Article is not published in Locationews!<br>Article's location cannot be empty. Set location on map or directly to <a href=\"#locationews\" title=\"Go to coordinates field\">coordinates field</a>", $this->ln_get_slug() )
+			21 => __( 'Error copying image, file not found', $this->ln_get_slug() )
 		];
 
 		if ( false != $code && isset( $errors[ $code ] ) ) {

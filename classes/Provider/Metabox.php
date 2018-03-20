@@ -361,17 +361,6 @@ class Locationews_Provider_Metabox extends Locationews_AbstractProvider {
 			];
 		}
 
-		// If coordinates are empty, don't save
-		if ( $post_meta['on'] == 1 && $post_meta['latlng'] == null ) {
-			// show error
-			add_filter( 'redirect_post_location', function ( $loc ) use ( $post_meta ) {
-				return add_query_arg( 'locationews-err', 99, $loc );
-			} );
-
-			return $post_id;
-		}
-
-
 		$image_to_api = null;
 		$image_url    = wp_get_attachment_url( get_post_thumbnail_id( $post_id ) );
 		$url          = parse_url( $image_url );
