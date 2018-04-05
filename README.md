@@ -22,6 +22,9 @@ This plugin is built on Cerado's [Structure](https://github.com/cedaro/structure
 
 ## Changelog
 
+### 2.0.2 (2018-04-04)
+* Changed:	Check return type in wp_remote_get and wp_remote_post.
+
 ### 2.0.1 (2018-03-20)
 * Changed:	Not to require any location to publish articles.
 

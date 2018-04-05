@@ -79,6 +79,11 @@ class Locationews_Plugin extends Locationews_AbstractPlugin {
 
 		$this->options = get_option( 'locationews_options' );
 
+		if ( empty( $this->options ) && is_multisite() ) {
+			$this->options = get_site_option( 'locationews_options' );
+		}
+
+
 		$this->user_options = get_option( 'locationews_user' );
 
 		$front_options = [];
@@ -238,7 +243,8 @@ class Locationews_Plugin extends Locationews_AbstractPlugin {
 		$transient_field = 'locationews_categories_' . $lan;
 		$transient_age   = 604800; // 7 days
 
-		if ( false === ( $categories = get_transient( $transient_field ) ) ) {
+
+		if ( false === ( $categories = get_transient( $transient_field ) ) || empty( $categories ) ) {
 
 			$api_categories = $this->ln_get_api_categories( $lan );
 			$api_categories = json_decode( $api_categories, true );
@@ -494,6 +500,40 @@ class Locationews_Plugin extends Locationews_AbstractPlugin {
 	}
 
 	/**
+	 * Field textarea
+	 *
+	 * Creates textarea field.
+	 *
+	 * @since 2.0.2
+	 *
+	 * @param $args
+	 */
+	public function ln_field_textarea( $args ) {
+
+		$defaults = [
+			'name'  => '',
+			'value' => '',
+			'id' => '',
+			'description' => '',
+		];
+
+		$atts = wp_parse_args( $args, $defaults );
+
+		if ( ! empty( $this->user_options[ $atts['id'] ] ) ) {
+			$atts['value'] = $this->user_options[ $atts['id'] ];
+		}
+		?>
+		<div class="form-group locationews-form-group">
+			<label for="<?php echo esc_attr( $atts['id'] ); ?>">
+				<textarea id="<?php echo esc_attr( $atts['id'] ); ?>" name="<?php echo esc_attr( $atts['name'] ); ?>" class="form-control" rows="5" cols="100"><?php echo esc_attr( $atts['value'] ); ?></textarea>
+				<?php echo esc_attr( $atts['description'] ) ?>
+			</label>
+		
+		</div>
+		<?php
+	}
+
+	/**
 	 * Field Google Map
 	 *
 	 * Creates a Google Map location field.
@@ -603,7 +643,7 @@ class Locationews_Plugin extends Locationews_AbstractPlugin {
 				break;
 		}
 
-		if ( ! $response ) {
+		if ( ! $response || ! is_array( $response ) ) {
 			return [
 				'error'  => 1,
 				'msg'    => 'locationews response error: no response',
@@ -662,7 +702,7 @@ class Locationews_Plugin extends Locationews_AbstractPlugin {
 
 		$response = wp_remote_get( $this->ln_get_option( 'apiUrl' ) . '/categories?lan=' . $lan );
 
-		if ( isset( $response['body'] ) ) {
+		if ( is_array( $response ) ) {
 			return $response['body'];
 		}
 

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Locationews\n"
-"POT-Creation-Date: 2018-01-31 12:01+0200\n"
+"POT-Creation-Date: 2018-04-05 14:42+0300\n"
 "PO-Revision-Date: 2018-01-30 17:24+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -21,28 +21,28 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: classes/Plugin.php:293
+#: classes/Plugin.php:299
 msgid "All"
 msgstr ""
 
-#: classes/Plugin.php:488 classes/Provider/Admin.php:133
+#: classes/Plugin.php:563 classes/Provider/Admin.php:133
 #: classes/Provider/Metabox.php:318
 msgid "Search location"
 msgstr ""
 
-#: classes/Plugin.php:631
+#: classes/Plugin.php:725
 msgid "Post successfully added"
 msgstr ""
 
-#: classes/Plugin.php:632
+#: classes/Plugin.php:726
 msgid "Post successfully updated"
 msgstr ""
 
-#: classes/Plugin.php:633
+#: classes/Plugin.php:727
 msgid "Post deleted from Locationews"
 msgstr ""
 
-#: classes/Plugin.php:634
+#: classes/Plugin.php:728
 msgid ""
 "Post successfully added. <strong>Note that this is just a testing "
 "enviroment. Your article was not really posted to Locationews API.</strong> "
@@ -50,7 +50,7 @@ msgid ""
 "\"_blank\">Locationews.com</a>"
 msgstr ""
 
-#: classes/Plugin.php:635
+#: classes/Plugin.php:729
 msgid ""
 "Post successfully updated. <strong>Note that this is just a testing "
 "enviroment. Your article was not really posted to Locationews API.</strong> "
@@ -58,7 +58,7 @@ msgid ""
 "\"_blank\">Locationews.com</a>"
 msgstr ""
 
-#: classes/Plugin.php:636
+#: classes/Plugin.php:730
 msgid ""
 "Post deleted from Locationews. <strong>Note that this is just a testing "
 "enviroment. Your article was not really posted to Locationews API.</strong> "
@@ -66,99 +66,92 @@ msgid ""
 "\"_blank\">Locationews.com</a>"
 msgstr ""
 
-#: classes/Plugin.php:659
+#: classes/Plugin.php:753
 msgid "General error"
 msgstr ""
 
-#: classes/Plugin.php:660
+#: classes/Plugin.php:754
 msgid "Invalid URL or request method"
 msgstr ""
 
-#: classes/Plugin.php:661
+#: classes/Plugin.php:755
 msgid "No Authorization header"
 msgstr ""
 
-#: classes/Plugin.php:662
+#: classes/Plugin.php:756
 msgid "JWT error"
 msgstr ""
 
-#: classes/Plugin.php:663
+#: classes/Plugin.php:757
 msgid "Missing required parameter"
 msgstr ""
 
-#: classes/Plugin.php:664
+#: classes/Plugin.php:758
 msgid "Forbidden parameter"
 msgstr ""
 
-#: classes/Plugin.php:665
+#: classes/Plugin.php:759
 msgid "Invalid value for parameter"
 msgstr ""
 
-#: classes/Plugin.php:666
+#: classes/Plugin.php:760
 msgid "Insufficient privileges to perform action"
 msgstr ""
 
-#: classes/Plugin.php:667
+#: classes/Plugin.php:761
 msgid "No news id"
 msgstr ""
 
-#: classes/Plugin.php:668
+#: classes/Plugin.php:762
 msgid "No user id"
 msgstr ""
 
-#: classes/Plugin.php:669
+#: classes/Plugin.php:763
 msgid "User not found"
 msgstr ""
 
-#: classes/Plugin.php:670
+#: classes/Plugin.php:764
 msgid "Error uploading image"
 msgstr ""
 
-#: classes/Plugin.php:671
+#: classes/Plugin.php:765
 msgid "Unable to delete file since the file does not exist"
 msgstr ""
 
-#: classes/Plugin.php:672
+#: classes/Plugin.php:766
 msgid "Image file not deleted since it does not belong to this news"
 msgstr ""
 
-#: classes/Plugin.php:673
+#: classes/Plugin.php:767
 msgid "Saving news data failed"
 msgstr ""
 
-#: classes/Plugin.php:674
+#: classes/Plugin.php:768
 msgid "No publication id"
 msgstr ""
 
-#: classes/Plugin.php:675
+#: classes/Plugin.php:769
 msgid "Publication not found"
 msgstr ""
 
-#: classes/Plugin.php:676
+#: classes/Plugin.php:770
 msgid "Error processing image"
 msgstr ""
 
-#: classes/Plugin.php:677
+#: classes/Plugin.php:771
 msgid "Error resizing image"
 msgstr ""
 
-#: classes/Plugin.php:678
+#: classes/Plugin.php:772
 msgid "Error saving resized image"
 msgstr ""
 
-#: classes/Plugin.php:679
+#: classes/Plugin.php:773
 msgid "Error saving image thumbnail"
 msgstr ""
 
-#: classes/Plugin.php:680
+#: classes/Plugin.php:774
 msgid "Error copying image, file not found"
-msgstr ""
-
-#: classes/Plugin.php:681
-msgid ""
-"Article is not published in Locationews!<br>Article's location cannot be "
-"empty. Set location on map or directly to <a href=\"#locationews\" title="
-"\"Go to coordinates field\">coordinates field</a>"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
@@ -226,63 +219,87 @@ msgid ""
 "on the map. You can also search location by address."
 msgstr ""
 
-#: classes/Provider/Options.php:69
+#: classes/Provider/Options.php:57 classes/Provider/Options.php:58
+msgid "Edit Settings"
+msgstr ""
+
+#: classes/Provider/Options.php:66 classes/Provider/Options.php:67
+#: classes/Provider/Options.php:178 classes/Provider/Options.php:278
+msgid "Import Settings"
+msgstr ""
+
+#: classes/Provider/Options.php:93
 msgid ""
 "Locationews plugin publish your news to Locationews service. With these "
 "settings, you can specify the basic functions on the map selector which "
 "appear in the article edit view."
 msgstr ""
 
-#: classes/Provider/Options.php:73
+#: classes/Provider/Options.php:97
 msgid ""
 "Register your free account at <a href=\"https://locationews.com/en/\" target="
 "\"_blank\">Locationews.com</a> and start publishing."
 msgstr ""
 
-#: classes/Provider/Options.php:100
+#: classes/Provider/Options.php:124
 msgid "Save Settings"
 msgstr ""
 
-#: classes/Provider/Options.php:125
+#: classes/Provider/Options.php:152
+msgid ""
+"Download plugin settings from <a href=\"https://locationews.com/en/\" target="
+"\"_blank\">Locationews.com</a> and copy contents of settings.json to "
+"textarea."
+msgstr ""
+
+#: classes/Provider/Options.php:203
 msgid "Settings"
 msgstr ""
 
-#: classes/Provider/Options.php:132
+#: classes/Provider/Options.php:210
 msgid "Default Category"
 msgstr ""
 
-#: classes/Provider/Options.php:137
+#: classes/Provider/Options.php:215
 msgid ""
 "Set the default category for Locationews articles. This function does not "
 "affect on the WordPress categories."
 msgstr ""
 
-#: classes/Provider/Options.php:146
+#: classes/Provider/Options.php:224
 msgid "Categories"
 msgstr ""
 
-#: classes/Provider/Options.php:151
+#: classes/Provider/Options.php:229
 msgid "Select WordPress Categories whose news you want to post to Locationews."
 msgstr ""
 
-#: classes/Provider/Options.php:160
+#: classes/Provider/Options.php:238
 msgid "Post types"
 msgstr ""
 
-#: classes/Provider/Options.php:165
+#: classes/Provider/Options.php:243
 msgid ""
 "Choose which post types you want to allow use Locationews. The default "
 "option is normal post type."
 msgstr ""
 
-#: classes/Provider/Options.php:174
+#: classes/Provider/Options.php:252
 msgid "Default location"
 msgstr ""
 
-#: classes/Provider/Options.php:179
+#: classes/Provider/Options.php:257
 msgid ""
 "Select the default location (the default option is your publication's "
 "address, here you can choose another location)."
+msgstr ""
+
+#: classes/Provider/Options.php:285
+msgid "Contents of settings.json"
+msgstr ""
+
+#: classes/Provider/Options.php:290
+msgid "Copy and paste contents of settings.json here."
 msgstr ""
 
 #: classes/hooks/Locationews_Activator.php:21

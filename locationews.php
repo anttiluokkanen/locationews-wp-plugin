@@ -9,7 +9,7 @@
  * @wordpress-plugin
  * Plugin Name:       Locationews
  * Description:       Publish location based articles in Locationews.
- * Version:           2.0.1
+ * Version:           2.0.2
  * Author:            Locationews
  * Author URI:        https://www.locationews.com
  * Requires:          PHP >= 5.6, Wordpress >= 4.9
@@ -29,12 +29,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Plugin version.
  */
-$locationews_version = '2.0.1';
+$locationews_version = '2.0.2';
 
 /**
  * Plugin enviroment.
  */
 $locationews_enviroment = 'production';
+
+define( 'LOCATIONEWS_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
 /**
  * Autoloader callback.

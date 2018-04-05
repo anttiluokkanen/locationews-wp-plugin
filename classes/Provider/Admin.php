@@ -48,7 +48,7 @@ class Locationews_Provider_Admin extends Locationews_AbstractProvider {
 	 */
 	public function ln_load_scripts() {
 
-		if ( get_current_screen()->id == 'toplevel_page_locationews-settings' || ( isset( get_current_screen()->post_type ) && in_array( get_current_screen()->post_type, array_keys( $this->plugin->ln_get_option( 'postTypes', 'user' ) ) ) ) ) {
+		if ( in_array( get_current_screen()->id, [ 'toplevel_page_locationews-settings', 'locationews_page_locationews-json-settings' ] ) || ( isset( get_current_screen()->post_type ) && in_array( get_current_screen()->post_type, array_keys( $this->plugin->ln_get_option( 'postTypes', 'user' ) ) ) ) ) {
 
 			wp_enqueue_style(
 				'locationews',
@@ -180,5 +180,5 @@ class Locationews_Provider_Admin extends Locationews_AbstractProvider {
 		return $library_already_registered;
 
 	}
-
+	
 }

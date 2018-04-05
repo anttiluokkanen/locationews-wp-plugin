@@ -169,7 +169,7 @@ class Locationews_Activator {
 				wp_die( __( 'Required settings are invalid', 'locationews' ) . ' (' . plugin_dir_url( __FILE__ ) . '/settings.json).', 'Plugin dependency check', array('back_link' => true ) );
 			}
 
-		} elseif ( false != get_option('locationews_options') ) {
+		} elseif ( ! empty( get_option('locationews_options') ) ) {
 
 			// So we don't have a valid settings file.
 			// But it seems that we had a previous install of the plugin and have stored the settings before
@@ -179,7 +179,12 @@ class Locationews_Activator {
 			// Return old settings
 			return $settings;
 
-		} elseif ( false != get_option('_locationews_trash') ) {
+		} elseif ( ! empty( get_site_option('locationews_options') ) ) {
+			
+			// Multisite settings found
+			$settings = get_site_option('locationews_options');
+
+		} elseif ( ! empty( get_option('_locationews_trash') ) ) {
 
 			// So we don't have a valid settings file.
 			// But it seems that we had a previous install of the plugin and have stored the settings before

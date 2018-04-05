@@ -5,11 +5,11 @@ Plugin Name: Locationews
 Plugin URI: https://www.locationews.com
 Tags: location, local, map, news, publishing, journalism
 Requires at least: 4.8
-Tested up to: 4.9.4
-Stable tag: 2.0.1
+Tested up to: 4.9.5
+Stable tag: 2.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Version: 2.0.1
+Version: 2.0.2
 
 Publish location based articles in Locationews.
 
@@ -32,6 +32,9 @@ This plugin is built on Cerado's [Structure](https://github.com/cedaro/structure
 3. Use the Locationews screen to configure the plugin.
 
 == Changelog ==
+
+= 2.0.2. (2018-04-04) =
+* Changed:	Check return type in wp_remote_get and wp_remote_post.
 
 = 2.0.1 (2018-03-20) =
 * Changed:	Not to require any location to publish articles.
