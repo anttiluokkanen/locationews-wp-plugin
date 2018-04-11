@@ -48,7 +48,14 @@ class Locationews_Provider_Admin extends Locationews_AbstractProvider {
 	 */
 	public function ln_load_scripts() {
 
-		if ( in_array( get_current_screen()->id, [ 'toplevel_page_locationews-settings', 'locationews_page_locationews-json-settings' ] ) || ( isset( get_current_screen()->post_type ) && in_array( get_current_screen()->post_type, array_keys( $this->plugin->ln_get_option( 'postTypes', 'user' ) ) ) ) ) {
+		$post_types = [];
+		$user_post_types = $this->plugin->ln_get_option( 'postTypes', 'user' );
+		
+		if ( is_array( $user_post_types ) ) {
+			$post_types = array_keys( $user_post_types );
+		}
+
+		if ( in_array( get_current_screen()->id, [ 'toplevel_page_locationews-settings', 'locationews_page_locationews-json-settings' ] ) || ( isset( get_current_screen()->post_type ) && in_array( get_current_screen()->post_type, $post_types ) ) ) {
 
 			wp_enqueue_style(
 				'locationews',
@@ -101,7 +108,7 @@ class Locationews_Provider_Admin extends Locationews_AbstractProvider {
 				);
 			}
 
-			if ( isset( get_current_screen()->post_type ) && in_array( get_current_screen()->post_type, array_keys( $this->plugin->ln_get_option( 'postTypes', 'user' ) ) ) ) {
+			if ( isset( get_current_screen()->post_type ) && in_array( get_current_screen()->post_type, $post_types ) ) {
 
 				wp_enqueue_script(
 					'locationews-metabox-init-js',

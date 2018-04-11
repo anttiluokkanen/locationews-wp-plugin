@@ -424,7 +424,13 @@ class Locationews_Plugin extends Locationews_AbstractPlugin {
 				$all = false;
 				foreach ( $atts['fields'] as $key => $field ):
 					if ( $atts['id'] == 'defaultCategories' ) {
-						if ( in_array( 'all', array_keys( $this->user_options['defaultCategories'] ) ) ) {
+						
+						$user_categories = [];
+						if ( is_array( $this->user_options['defaultCategories'] ) ) {
+							$user_categories = array_keys( $this->user_options['defaultCategories'] );	
+						}
+
+						if ( in_array( 'all', $user_categories ) ) {
 							$all = true;
 						}
 						if ( $all === true ) {
