@@ -140,10 +140,11 @@ class Locationews_Provider_Metabox extends Locationews_AbstractProvider {
 		}
 
 		foreach ( $this->plugin->ln_get_option( 'defaultCategories', 'user' ) as $catname => $val ) {
+			
 			$cat = get_category_by_slug( $catname );
-
 			if ( $cat ) {
 				$this->active_categories[] = $cat->term_id;
+
 				if ( in_array( $cat->term_id, wp_get_post_categories( $post->ID ) ) ) {
 					$this->show_metabox = true;
 				}
@@ -169,10 +170,12 @@ class Locationews_Provider_Metabox extends Locationews_AbstractProvider {
 				'locationews-metabox-init-js',
 				'locationews_metabox_init',
 				[
+					'action'				 => get_current_screen()->action,
 					'post_type'              => $post->post_type,
 					'display_metabox'        => $this->show_metabox,
 					'display_metabox_always' => $this->show_metabox_always,
 					'catids'                 => $this->active_categories,
+					'locationewson'			 => $this->locationews_meta['on'],
 				]
 			);
 		}
@@ -196,21 +199,22 @@ class Locationews_Provider_Metabox extends Locationews_AbstractProvider {
 		<div class="locationews-wp-plugin">
 			<?php wp_nonce_field( 'save_locationews_meta', 'locationews-meta-box-nonce' ); ?>
 			<input type="hidden" name="locationews_Id"
-			       value="<?php echo esc_attr( $this->locationews_meta['id'] ); ?>"/>
+				   value="<?php echo esc_attr( $this->locationews_meta['id'] ); ?>"/>
+			<input type="hidden" name="locationews_hidden" id="locationews_hidden" value="<?php echo $this->locationews_meta['on']; ?>" />
 			<div class="row">
 				<div class="col-md-4">
 					<div class="form-group locationews-form-group">
 		                <span class="ln-tooltip"
 		                      title="<?php _e( 'When Locationews is enabled, the article will be automatically added to Locationews when you press the Publish. If you would like to take published article out of Locationews, change to Off and update the article.', $this->plugin->ln_get_slug() ); ?>">
 		                    <label
-			                    for="locationews"><?php _e( 'Locationews enabled', $this->plugin->ln_get_slug() ); ?>
+			                    for="locationewson"><?php _e( 'Locationews enabled', $this->plugin->ln_get_slug() ); ?>
 			                    <br>
 		                        <input data-size="small" data-on-color="default"
 		                               data-off-color="default"
 		                               data-on-text="ON" data-off-text="OFF"
 		                               aria-role="checkbox"
 		                               class="locationews" <?php checked( 1, $this->locationews_meta['on'], true ); ?>
-		                               id="locationews" name="locationews"
+		                               id="locationewson" name="locationews"
 		                               type="checkbox" value="1"/>
 		                    </label>
 		                </span>
@@ -256,6 +260,7 @@ class Locationews_Provider_Metabox extends Locationews_AbstractProvider {
 			                </span>
 						</div>
 					<?php endif; ?>
+					<?php if ( ! empty( $this->plugin->ln_get_option( 'category' ) ) ): ?>
 					<div class="form-group locationews-form-group clear">
 		                <span class="ln-tooltip"
 		                      title="<?php _e( 'Select a Locationews category for the news. This function does not affect to the WordPress categories.', $this->plugin->ln_get_slug() ); ?>">
@@ -275,6 +280,7 @@ class Locationews_Provider_Metabox extends Locationews_AbstractProvider {
 		                    </select>
 		                </span>
 					</div>
+					<?php endif; ?>
 					<div class="form-group locationews-form-group">
 						<span class="ln-tooltip"
 						      title="<?php _e( 'Article\'s authors', $this->plugin->ln_get_slug() ); ?>">
@@ -336,7 +342,7 @@ class Locationews_Provider_Metabox extends Locationews_AbstractProvider {
 	 * @return mixed
 	 */
 	public function ln_save_post( $post_id ) {
-
+		
 		$response = false;
 
 		// if this is scheduled future post, do not check these cases
@@ -394,6 +400,16 @@ class Locationews_Provider_Metabox extends Locationews_AbstractProvider {
 			$data['latitude']  = '';
 			$data['longitude'] = '';
 		}
+		if ( empty( $data['latitude'] ) || empty( $data['longitude'] ) ) {
+			// Get possible GEOTAGGED data
+			$geotagged_coordinates = $this->has_geotags( $post_id );
+			if ( is_array( $geotagged_coordinates ) && isset( $geotagged_coordinates[0] ) ) {
+				list( $data['latitude'], $data['longitude'] ) = explode( ',', $geotagged_coordinates[0] );
+				$post_meta['latlng'] = $geotagged_coordinates[0];
+				$post_meta['geotags'] = $geotagged_coordinates;
+			} 
+		}
+		
 
 		// is post published
 		if ( 'publish' == $post->post_status ) {
@@ -533,6 +549,64 @@ class Locationews_Provider_Metabox extends Locationews_AbstractProvider {
 					}
 				}
 			}
+		}
+	}
+
+	/**
+	 * Has Geotags
+	 *
+	 * Find GEOTAGS from post tags
+	 *
+	 * @since 2.0.3
+	 *
+	 * @param $post_id
+	 * 
+	 * @return mixed
+	 */
+	public function has_geotags( $post_id ) {
+		$geo = array();
+		$coordinates = array();
+		$lat = '';
+		$lon = '';
+		$tags = wp_get_post_tags( $post_id );
+
+		if ( is_array( $tags ) ) {
+			foreach ( $tags as $tag ) {
+				if ( false !== strpos( $tag->slug, 'geolat' ) ) {
+					list( $tmp, $location ) = explode('geolat', $tag->slug );
+					if ( $location ) {
+						$location = preg_replace("/[^0-9.,-]/","", $location );
+						$lat = floatval( trim( str_replace('-', '.', $location ) ) );
+						$geo['lat'][] = $lat;
+					}
+				}
+				if ( false !== strpos( $tag->slug, 'geolon' ) ) {
+					list( $tmp, $location ) = explode('geolon', $tag->slug );
+					if ( $location ) {
+						$location = preg_replace("/[^0-9.,-]/","", $location );
+						$lon = floatval( trim( str_replace('-', '.', $location ) ) );
+						$geo['lon'][] = $lon;
+					}
+				}
+			}
+		}
+
+		if ( isset( $geo['lat'] ) && is_array( $geo['lat'] ) && isset( $geo['lon'] ) && is_array( $geo['lon'] ) ) {
+			$i = 0;
+			foreach ( $geo['lat'] as $latitude ) {
+				if ( isset( $geo['lon'][ $i ] ) ) {
+					if ( preg_match('/^[-]?((([0-8]?[0-9])(\.(\d+))?)|(90(\.0+)?)),[-]?((((1[0-7][0-9])|([0-9]?[0-9]))(\.(\d+))?)|180(\.0+)?)$/', $geo['lat'][ $i ] . ',' . $geo['lon'][ $i ] ) ) {
+						$coordinates[] = ( $geo['lat'][ $i ] . ',' . $geo['lon'][ $i ] );
+					}
+				}
+				$i++;
+			}
+		}
+		
+		if ( ! empty( $coordinates ) ) {
+			return $coordinates;
+		} else {
+			return false;
 		}
 	}
 

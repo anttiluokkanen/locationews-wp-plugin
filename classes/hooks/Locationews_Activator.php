@@ -28,6 +28,10 @@ class Locationews_Activator {
 
 		// Do we have valid settings
 		$settings = self::get_config();
+		
+		if ( empty($settings)) {
+			wp_die( __( "Can't read required settings", 'locationews' ), 'Plugin dependency check', array( 'back_link' => true ) );
+		}
 
 		// Should be associative array
 		if ( is_array( $settings ) ) {
@@ -154,11 +158,16 @@ class Locationews_Activator {
 	public static function get_config() {
 
 		// Do we have a valid settings file
-		if ( file_exists( plugin_dir_url( __FILE__ ) . '/settings.json') ) {
-
+		if ( file_exists( LOCATIONEWS_BASE_DIR . 'settings.json') || file_exists( LOCATIONEWS_BASE_URL . 'settings.json') ) {
+			
 			//  Read config settings
-			$settings_json = file_get_contents( plugin_dir_url( __FILE__ ) . '/settings.json');
+			$settings_json = file_get_contents( LOCATIONEWS_BASE_DIR . 'settings.json');
 			$settings = json_decode( $settings_json, true );
+
+			if ( ! is_array( $settings ) || empty( $settings ) ) {
+				$settings_json = file_get_contents( LOCATIONEWS_BASE_URL . 'settings.json');
+				$settings = json_decode( $settings_json, true );
+			}
 
 			// If the data is a valid array
 			if ( is_array( $settings ) ) {
@@ -166,11 +175,10 @@ class Locationews_Activator {
 				return self::merge_defaults( $settings );
 			} else {
 				// Can't read config settings
-				wp_die( __( 'Required settings are invalid', 'locationews' ) . ' (' . plugin_dir_url( __FILE__ ) . '/settings.json).', 'Plugin dependency check', array('back_link' => true ) );
+				wp_die( __( 'Required settings are invalid', 'locationews' ) . ' (' . LOCATIONEWS_BASE_URL . 'settings.json).', 'Plugin dependency check', array('back_link' => true ) );
 			}
 
-		} elseif ( ! empty( get_option('locationews_options') ) ) {
-
+		} elseif ( false != get_option('locationews_options') ) {
 			// So we don't have a valid settings file.
 			// But it seems that we had a previous install of the plugin and have stored the settings before
 			// and the plugin has not been uninstalled.
@@ -179,13 +187,7 @@ class Locationews_Activator {
 			// Return old settings
 			return $settings;
 
-		} elseif ( ! empty( get_site_option('locationews_options') ) ) {
-			
-			// Multisite settings found
-			$settings = get_site_option('locationews_options');
-
-		} elseif ( ! empty( get_option('_locationews_trash') ) ) {
-
+		} elseif ( false != get_option('_locationews_trash') ) {
 			// So we don't have a valid settings file.
 			// But it seems that we had a previous install of the plugin and have stored the settings before
 			$settings = get_option('_locationews_trash');
@@ -197,7 +199,7 @@ class Locationews_Activator {
 			return $settings;
 
 		}
-
+		
 		return self::merge_defaults();
 	}
 
@@ -211,14 +213,28 @@ class Locationews_Activator {
 	public static function merge_defaults( $settings = array() ) {
 
 		// We may add some default settings also
-		if ( file_exists( plugin_dir_url( __FILE__ ) . '/defaults.json') ) {
+		if ( file_exists( LOCATIONEWS_BASE_DIR . 'defaults.json' ) || file_exists( LOCATIONEWS_BASE_URL . 'defaults.json' ) ) {
 
-			$defaults_json = file_get_contents( plugin_dir_url( __FILE__ ) . '/defaults.json');
+			$defaults_json = file_get_contents( LOCATIONEWS_BASE_DIR . 'defaults.json');
 			$defaults = json_decode( $defaults_json, true );
+
+			if ( ! is_array( $defaults ) || empty( $defaults ) ) {
+				$defaults_json = file_get_contents( LOCATIONEWS_BASE_URL . 'defaults.json');
+				$defaults = json_decode( $defaults_json, true );
+			}
 
 			// If we have default settings, let's merge them with config settings
 			if ( is_array( $defaults ) && ! empty( $defaults ) ) {
 				$settings = array_merge( $defaults, $settings );
+			} else {
+				$settings = array_merge( 
+					array(
+						'defaultCategories' => array('all' => 1),
+						'postTypes'         => array('post' => 1),
+						'location'          => '60.192059,24.945831'
+					),
+					$settings
+				);
 			}
 		}
 		return $settings;
@@ -229,12 +245,19 @@ class Locationews_Activator {
 	 */
 	public static function remove_config() {
 		// If settings file exists
-		if ( file_exists( plugin_dir_url( __FILE__ ) . '/settings.json')  && is_file( plugin_dir_url( __FILE__ ) . '/settings.json') ) {
+		if ( file_exists( LOCATIONEWS_BASE_DIR . 'settings.json')  && is_file( LOCATIONEWS_BASE_DIR . 'settings.json') ) {
 			// Try to remove the file or reset the file
-			if ( is_writable( plugin_dir_url( __FILE__ ) . '/settings.json') ) {
-			    @unlink( plugin_dir_url( __FILE__ ) . '/settings.json' );
+			if ( is_writable( LOCATIONEWS_BASE_DIR . 'settings.json') ) {
+			    @unlink( LOCATIONEWS_BASE_DIR . 'settings.json' );
 			} else {
-				@file_put_contents( plugin_dir_url( __FILE__ ) . '/settings.json', '');
+				@file_put_contents( LOCATIONEWS_BASE_DIR . 'settings.json', '');
+			}
+		} elseif ( file_exists( LOCATIONEWS_BASE_URL . 'settings.json')  && is_file( LOCATIONEWS_BASE_URL . 'settings.json') ) {
+			// Try to remove the file or reset the file
+			if ( is_writable( LOCATIONEWS_BASE_URL . 'settings.json') ) {
+			    @unlink( LOCATIONEWS_BASE_URL . 'settings.json' );
+			} else {
+				@file_put_contents( LOCATIONEWS_BASE_URL . 'settings.json', '');
 			}
 		}
 	}

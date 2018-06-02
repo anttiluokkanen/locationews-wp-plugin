@@ -611,7 +611,20 @@ class Locationews_Plugin extends Locationews_AbstractPlugin {
 	 * @return array
 	 */
 	public function ln_api_call( $action, $data = [] ) {
+		$data['message'] = 'Artikkeli lisätty';
+		$data['id'] = rand(9000,9999);
 
+		return [
+			'success' => '1',
+			'msg'     => $data['message'],
+			'id'      => isset( $data['id'] ) ? $data['id'] : null,
+			'action'  => $action,
+		];
+
+
+
+
+		
 		// Test use
 		if ( $this->ln_get_option( 'jwt' ) == 'plugintest' ) {
 			return [

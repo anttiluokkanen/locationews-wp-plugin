@@ -46,7 +46,7 @@ class Locationews_Provider_Admin extends Locationews_AbstractProvider {
 	 *
 	 * @since 2.0.0
 	 */
-	public function ln_load_scripts() {
+	public function ln_load_scripts($hook) {
 
 		$post_types = [];
 		$user_post_types = $this->plugin->ln_get_option( 'postTypes', 'user' );
@@ -55,7 +55,11 @@ class Locationews_Provider_Admin extends Locationews_AbstractProvider {
 			$post_types = array_keys( $user_post_types );
 		}
 
-		if ( in_array( get_current_screen()->id, [ 'toplevel_page_locationews-settings', 'locationews_page_locationews-json-settings' ] ) || ( isset( get_current_screen()->post_type ) && in_array( get_current_screen()->post_type, $post_types ) ) ) {
+		if ( 
+			in_array( get_current_screen()->id, [ 'toplevel_page_locationews-settings', 'locationews_page_locationews-json-settings' ] ) 
+			|| ( in_array( $hook, array('post-new.php', 'post.php') ) ) /*
+			|| ( isset( get_current_screen()->post_type ) 
+				&& in_array( get_current_screen()->post_type, $post_types ) ) */) {
 
 			wp_enqueue_style(
 				'locationews',

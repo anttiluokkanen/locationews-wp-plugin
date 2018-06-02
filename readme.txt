@@ -5,11 +5,11 @@ Plugin Name: Locationews
 Plugin URI: https://www.locationews.com
 Tags: location, local, map, news, publishing, journalism
 Requires at least: 4.8
-Tested up to: 4.9.5
-Stable tag: 2.0.2
+Tested up to: 4.9.6
+Stable tag: 2.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Version: 2.0.2
+Version: 2.0.3
 
 Publish location based articles in Locationews.
 
@@ -32,6 +32,12 @@ This plugin is built on Cerado's [Structure](https://github.com/cedaro/structure
 3. Use the Locationews screen to configure the plugin.
 
 == Changelog ==
+
+= 2.0.3 (2018-06-02) =
+* NEW:  Use possible Geotags (e.g. GEO:LAT=0.0, GEO:LON=0.0) for coordinates when map coordinates not set.
+* NEW:  Added option to import plugin settings.
+* Fixed:    Metabox behaviour when choosing article categories.
+* Bugfix:   Couldn't read the required config files.
 
 = 2.0.2. (2018-04-11) =
 * Changed:	Check return type in wp_remote_get and wp_remote_post.

@@ -205,6 +205,7 @@ class Locationews_Provider_Options extends Locationews_AbstractProvider {
 			'locationews'
 		);
 
+		/*
 		add_settings_field(
 			'locationewsCategory',
 			__( 'Default Category', $this->plugin->ln_get_slug() ),
@@ -218,7 +219,8 @@ class Locationews_Provider_Options extends Locationews_AbstractProvider {
 				'fields'      => $this->plugin->ln_get_categories(),
 			]
 		);
-
+		*/
+		
 		add_settings_field(
 			'defaultCategories',
 			__( 'Categories', $this->plugin->ln_get_slug() ),
@@ -368,7 +370,7 @@ class Locationews_Provider_Options extends Locationews_AbstractProvider {
 	public function ln_import_json_settings( $new_value, $old_value ) {
 
 		if ( trim( $new_value ) == '' ) {
-			return '';
+			wp_die( __( "Settings can't be empty", 'locationews' ), 'Plugin dependency check', array('back_link' => true ) );
 		}
 
 		$settings = json_decode( $new_value, true );
@@ -376,10 +378,15 @@ class Locationews_Provider_Options extends Locationews_AbstractProvider {
 		if ( is_array( $settings ) ) {
 
 			// We may add some default settings also
-			if ( file_exists( LOCATIONEWS_PLUGIN_PATH . 'defaults.json') ) {
+			if ( file_exists( LOCATIONEWS_BASE_DIR . 'defaults.json' ) || file_exists( LOCATIONEWS_BASE_URL . 'defaults.json' ) ) {
 
-				$defaults_json = file_get_contents( LOCATIONEWS_PLUGIN_PATH . 'defaults.json');
+				$defaults_json = file_get_contents( LOCATIONEWS_BASE_DIR . 'defaults.json');
 				$defaults = json_decode( $defaults_json, true );
+
+				if ( ! is_array( $defaults ) || empty( $defaults ) ) {
+					$defaults_json = file_get_contents( LOCATIONEWS_BASE_URL . 'defaults.json');
+					$defaults = json_decode( $defaults_json, true );
+				}
 
 				// If we have default settings, let's merge them with config settings
 				if ( is_array( $defaults ) && ! empty( $defaults ) ) {
@@ -389,6 +396,19 @@ class Locationews_Provider_Options extends Locationews_AbstractProvider {
 
 			update_option( 'locationews_options', $settings );
 
+			$user_options = array(
+                'defaultCategories'    => $settings['defaultCategories'],
+                'postTypes'            => $settings['postTypes'],
+                'location'             => $settings['location']
+            );
+            if ( isset( $settings['switch'] ) ) {
+                $user_options['switch'] = $settings['switch'];
+            }
+			update_option('locationews_user',  $user_options );
+
+
+		} else {
+			wp_die( __( "Invalid JSON format.", 'locationews' ), 'Plugin dependency check', array('back_link' => true ) );
 		}
 
 		return '';

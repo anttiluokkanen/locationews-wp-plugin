@@ -5,6 +5,10 @@
     if (typeof google === 'object' && typeof google.maps === 'object') {
     } else {
       alert('Google Maps API not loaded.');
+      return;
+    }
+    if ( typeof locationews_map_init === 'undefined' ) {
+      return;
     }
 
     var locationews_marker  = '';
@@ -25,6 +29,7 @@
 
     var locationews_latitude    = coordinates[0];
     var locationews_longitude   = coordinates[1];
+
     var locationews_location    = new google.maps.LatLng(locationews_latitude, locationews_longitude);
     var locationews_map_options = {
       zoom                   : ( 0 !== locationews_map_init.zoom.length ? parseInt(locationews_map_init.zoom) : 9 ),
