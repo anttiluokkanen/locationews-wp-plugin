@@ -22,6 +22,9 @@ This plugin is built on Cerado's [Structure](https://github.com/cedaro/structure
 
 ## Changelog
 
+### 2.0.4 (2018-05-07)
+* Bugfix:   Set testing mode off. Allow to post to API.
+
 ### 2.0.3 (2018-06-02)
 * NEW:  Use possible Geotags (e.g. GEO:LAT=0.0, GEO:LON=0.0) for coordinates when map coordinates not set.
 * NEW:  Added option to import plugin settings.
