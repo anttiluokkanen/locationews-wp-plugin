@@ -221,7 +221,68 @@ class Locationews_Plugin extends Locationews_AbstractPlugin {
 			$post_meta['latlng'] = '';
 		}
 
+		$meta_keys = [ 'id', 'on', 'ads', 'showmore', 'category', 'authors', 'latlng', 'api' ];
+
+		if ( is_array( $post_meta ) ) {
+			foreach ( $post_meta as $post_meta_key => $post_meta_value ) {
+
+				if ( ! in_array( $post_meta_key, $meta_keys ) ) {
+					unset( $post_meta[ $post_meta_key ] );
+				} else {
+					$post_meta[ $post_meta_key ] = $this->ln_validate_meta( $post_meta_key, $post_meta_value );
+				}
+
+			}
+		}
+
+		
 		return $post_meta;
+
+	}
+
+	/**
+	 * Validate meta value
+	 * 
+	 * @param  string $key   [description]
+	 * @param  string $value [description]
+	 * @return [type]        [description]
+	 */
+	public function ln_validate_meta( $key = '', $value = '' ) {
+
+		switch ( $key ) {
+			// only numbers
+			case 'id':
+			case 'on':
+			case 'ads':
+			case 'showmore':
+			case 'category':
+			default:
+				return trim( preg_replace("/[^0-9]/", "", $value ) );
+				break;
+
+			// string
+			case 'authors':
+			case 'api':
+				return trim( filter_var( $value, FILTER_SANITIZE_STRING ) );
+				break;
+
+			// coordinates
+			case 'latlng':
+				if ( preg_match('/^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?),[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$/', $value ) ) {
+					return $value;
+				} else {
+					return '';
+				}
+				break;
+
+			case 'geotags':
+				if ( is_array( $value ) ) {
+					return $value;
+				} else {
+					return false;
+				}
+				break;
+		}
 
 	}
 

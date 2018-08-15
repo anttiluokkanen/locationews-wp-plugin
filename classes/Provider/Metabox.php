@@ -380,21 +380,21 @@ class Locationews_Provider_Metabox extends Locationews_AbstractProvider {
 		$caption = get_the_post_thumbnail_caption( $post_id );
 
 		$data = [
-			'Id'            => $post_meta['id'],
+			'Id'            => $this->plugin->ln_validate_meta( 'id', $post_meta['id'] ),
 			'title'         => apply_filters( 'the_title', get_post_field( 'post_title', $post_id ) ),
 			'text'          => apply_filters( 'the_content', get_post_field( 'post_content', $post_id ) ),
 			'shortText'     => get_post_field( 'post_excerpt', $post_id ),
 			'url'           => get_permalink( $post_id ),
 			'image'         => $image_to_api,
 			'caption'       => $caption,
-			'authors'       => $post_meta['authors'],
-			'showMore'      => $post_meta['showmore'],
-			'ads'           => $post_meta['ads'],
+			'authors'       => $this->plugin->ln_validate_meta( 'authors', $post_meta['authors'] ),
+			'showMore'      => $this->plugin->ln_validate_meta( 'showmore', $post_meta['showmore'] ),
+			'ads'           => $this->plugin->ln_validate_meta( 'ads', $post_meta['ads'] ),
 			'publicationId' => $this->plugin->ln_get_option( 'id' ),
-			'categoryId'    => $post_meta['category'],
+			'categoryId'    => $this->plugin->ln_validate_meta( 'category', $post_meta['category'] ),
 		];
 
-		if ( strpos( $post_meta['latlng'], ',' ) !== false ) {
+		if ( strpos( $post_meta['latlng'], ',' ) !== false && $this->plugin->ln_validate_meta( 'latlng', $post_meta['latlng'] ) ) {
 			list( $data['latitude'], $data['longitude'] ) = explode( ',', $post_meta['latlng'] );
 		} else {
 			$data['latitude']  = '';
@@ -404,12 +404,18 @@ class Locationews_Provider_Metabox extends Locationews_AbstractProvider {
 			// Get possible GEOTAGGED data
 			$geotagged_coordinates = $this->has_geotags( $post_id );
 			if ( is_array( $geotagged_coordinates ) && isset( $geotagged_coordinates[0] ) ) {
-				list( $data['latitude'], $data['longitude'] ) = explode( ',', $geotagged_coordinates[0] );
-				$post_meta['latlng'] = $geotagged_coordinates[0];
-				$post_meta['geotags'] = $geotagged_coordinates;
+				if ( $this->plugin->ln_validate_meta('latlng', $geotagged_coordinates[0] ) != '' ) {
+					list( $data['latitude'], $data['longitude'] ) = explode( ',', $geotagged_coordinates[0] );
+					$post_meta['latlng'] = $geotagged_coordinates[0];
+					$post_meta['geotags'] = $geotagged_coordinates;
+				}
 			} 
 		}
 		
+		foreach ( $post_meta as $post_meta_key => $post_meta_value ) {
+
+			$post_meta[ $post_meta_key ] = $this->plugin->ln_validate_meta( $post_meta_key, $post_meta_value );
+		}
 
 		// is post published
 		if ( 'publish' == $post->post_status ) {

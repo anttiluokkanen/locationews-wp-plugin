@@ -6,10 +6,10 @@ Plugin URI: https://www.locationews.com
 Tags: location, local, map, news, publishing, journalism
 Requires at least: 4.8
 Tested up to: 4.9.6
-Stable tag: 2.0.4
+Stable tag: 2.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Version: 2.0.4
+Version: 2.0.5
 
 Publish location based articles in Locationews.
 
@@ -32,6 +32,9 @@ This plugin is built on Cerado's [Structure](https://github.com/cedaro/structure
 3. Use the Locationews screen to configure the plugin.
 
 == Changelog ==
+
+= 2.0.5 (2018-08-15) =
+* Changed:	Validate and double check post meta values when setting or getting the values.
 
 = 2.0.4 (2018-06-07) =
 * Bugfix:   Set testing mode off. Allow to post to API.

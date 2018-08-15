@@ -22,6 +22,9 @@ This plugin is built on Cerado's [Structure](https://github.com/cedaro/structure
 
 ## Changelog
 
+### 2.0.5 (2018-08-15)
+* Changed:	Validate and double check post meta values when setting or getting the values.
+
 ### 2.0.4 (2018-05-07)
 * Bugfix:   Set testing mode off. Allow to post to API.
 
