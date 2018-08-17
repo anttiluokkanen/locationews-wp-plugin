@@ -217,22 +217,26 @@ class Locationews_Plugin extends Locationews_AbstractPlugin {
 			$post_meta = get_post_meta( $post->ID, $this->ln_get_meta_name(), true );
 		}
 
-		if ( ! isset( $post_meta['latlng'] ) ) {
-			$post_meta['latlng'] = '';
-		}
-
-		$meta_keys = [ 'id', 'on', 'ads', 'showmore', 'category', 'authors', 'latlng', 'api' ];
-
 		if ( is_array( $post_meta ) ) {
-			foreach ( $post_meta as $post_meta_key => $post_meta_value ) {
-
-				if ( ! in_array( $post_meta_key, $meta_keys ) ) {
-					unset( $post_meta[ $post_meta_key ] );
-				} else {
-					$post_meta[ $post_meta_key ] = $this->ln_validate_meta( $post_meta_key, $post_meta_value );
-				}
-
+			if ( ! isset( $post_meta['latlng'] ) ) {
+				//$post_meta['latlng'] = '';
 			}
+
+			$meta_keys = [ 'id', 'on', 'ads', 'showmore', 'category', 'authors', 'latlng', 'api' ];
+
+			if ( is_array( $post_meta ) ) {
+				foreach ( $post_meta as $post_meta_key => $post_meta_value ) {
+
+					if ( ! in_array( $post_meta_key, $meta_keys ) ) {
+						unset( $post_meta[ $post_meta_key ] );
+					} else {
+						$post_meta[ $post_meta_key ] = $this->ln_validate_meta( $post_meta_key, $post_meta_value );
+					}
+
+				}
+			}
+		} else {
+			$post_meta = array();
 		}
 
 		

@@ -64,10 +64,10 @@
 
     var compare_latlng = ( locationews_latitude + ',' + locationews_longitude );
 
-    if (0 !== locationews_meta.latlng.length && locationews_meta.latlng !== compare_latlng) {
+    if (locationews_meta.latlng !== compare_latlng) {
       $('#locationews-location').val(locationews_latitude + ',' + locationews_longitude);
     }
-
+  
     var locationews_map = new google.maps.Map(
       document.getElementById('locationews-google-map'),
       locationews_map_options

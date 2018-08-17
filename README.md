@@ -22,6 +22,9 @@ This plugin is built on Cerado's [Structure](https://github.com/cedaro/structure
 
 ## Changelog
 
+### 2.0.6 (2018-08-17)
+* Bugfix:	Fixed metabox javascript.
+
 ### 2.0.5 (2018-08-15)
 * Changed:	Validate and double check post meta values when setting or getting the values.
 
